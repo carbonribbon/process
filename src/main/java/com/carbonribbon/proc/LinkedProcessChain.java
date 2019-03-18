@@ -1,6 +1,5 @@
 package com.carbonribbon.proc;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -11,13 +10,31 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * Reference implementation of {@link ProcessChain}.
+ *
+ * @author Patrik Dallmann (@carbonribbon.com)
+ * @version 1.0
  */
-public final class LinkedProcessChain<T> implements ProcessChain<T> {
+public class LinkedProcessChain<T> implements ProcessChain<T> {
 
     private final Deque<MetaLink<T>> links;
+    private final ProcessLinkFactory factory;
 
+    /**
+     * Create a new {@link ProcessChain} using the {@link DefaultProcessLinkFactory}
+     */
     public LinkedProcessChain() {
         links = new ConcurrentLinkedDeque<>();
+        factory = new DefaultProcessLinkFactory();
+    }
+
+    /**
+     * Create a new {@link ProcessChain} using the provided {@link ProcessLinkFactory}
+     *
+     * @param factory {@link ProcessLinkFactory} to use for {@link ProcessLink} objects
+     */
+    public LinkedProcessChain(ProcessLinkFactory factory) {
+        links = new ConcurrentLinkedDeque<>();
+        this.factory = factory;
     }
 
     @Override
@@ -32,19 +49,9 @@ public final class LinkedProcessChain<T> implements ProcessChain<T> {
 
     @Override
     public void addLink(Class<? extends ProcessLink<T>> clazz) {
-        try {
-            ProcessLink<T> clazzInst = clazz.getConstructor().newInstance();
-            synchronized (this) {
-                links.add(new MetaLink<>(clazzInst));
-            }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+        ProcessLink<T> clazzInst = factory.newProcessLink(clazz);
+        synchronized (this) {
+            links.add(new MetaLink<>(clazzInst));
         }
     }
 
@@ -53,19 +60,9 @@ public final class LinkedProcessChain<T> implements ProcessChain<T> {
         if (test == null) {
             throw new NullPointerException();
         }
-        try {
-            ProcessLink<T> clazzInst = clazz.getConstructor().newInstance();
-            synchronized (this) {
-                links.add(new MetaLink<>(clazzInst, test));
-            }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+        ProcessLink<T> clazzInst = factory.newProcessLink(clazz);
+        synchronized (this) {
+            links.add(new MetaLink<>(clazzInst, test));
         }
     }
 

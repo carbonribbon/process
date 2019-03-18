@@ -5,6 +5,9 @@ import java.util.function.Predicate;
 
 /**
  * Allows for chaining together a collection of {@link ProcessLink} to be applied in order to an object.
+ *
+ * @author Patrik Dallmann (@carbonribbon.com)
+ * @version 1.0
  */
 public interface ProcessChain<T> {
     /**

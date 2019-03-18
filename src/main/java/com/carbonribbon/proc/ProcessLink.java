@@ -5,6 +5,9 @@ package com.carbonribbon.proc;
  * {@link ProcessLink}s can be chained together using a {@link ProcessChain}.
  * <p>
  * {@link ProcessLink} implementations must have a default constructor.
+ *
+ * @author Patrik Dallmann (@carbonribbon.com)
+ * @version 1.0
  */
 public interface ProcessLink<T> {
 
