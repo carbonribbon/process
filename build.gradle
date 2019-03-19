@@ -1,7 +1,19 @@
-group 'com.carbonribbon.process'
-version '1.0-SNAPSHOT'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    }
+}
 
 apply plugin: 'java'
+apply plugin: 'com.bmuschko.nexus'
+
+group 'com.carbonribbon'
+archivesBaseName = 'carbonribbon-process'
+version '0.1.0-SNAPSHOT'
+
 
 sourceCompatibility = 1.8
 
@@ -11,4 +23,43 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+modifyPom {
+    project {
+        name 'carbonribbon-process'
+        description 'Carbon Ribbon processing library'
+        url 'https://github.com/carbonribbon/process'
+        inceptionYear '2019'
+        scm {
+            url 'https://github.com/carbonribbon/process'
+            connection 'scm:https://github.com/carbonribbon/process.git'
+            developerConnection 'scm:git://github.com/carbonribbon/process.git'
+        }
+        licenses {
+            license {
+                name 'MIT License'
+                url 'https://github.com/carbonribbon/process/blob/master/LICENSE'
+                distribution 'repo'
+            }
+        }
+        developers {
+            developer {
+                id 'albertgao'
+                name 'Patrik Dallmann'
+                email 'admin@carbonribbon.com'
+            }
+        }
+    }
+}
+
+extraArchive {
+    sources = true
+    tests = false
+    javadoc = true
+}
+nexus {
+    sign = true
+    repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+    snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
 }
