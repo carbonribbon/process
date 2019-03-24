@@ -24,9 +24,9 @@ public class FactoryTest {
     public void setup() {
         extendedDefaultLinkFactory = new DefaultProcessLinkFactory() {
             @Override
-            public ProcessLink newProcessLink(Class<? extends ProcessLink> clazz) {
+            public <T> ProcessLink<T> newProcessLink(Class<? extends ProcessLink<T>> clazz) {
                 if (StringPadProcessLink.class.equals(clazz)) {
-                    return new StringPadProcessLink("+");
+                    return (ProcessLink<T>) new StringPadProcessLink("+");
                 }
                 return super.newProcessLink(clazz);
             }
@@ -36,7 +36,7 @@ public class FactoryTest {
     @Test
     public void testDefaultFactory() {
         ProcessLinkFactory factory = new DefaultProcessLinkFactory();
-        ProcessLink link = factory.newProcessLink(StringIndentProcessLink.class);
+        ProcessLink<String> link = factory.newProcessLink(StringIndentProcessLink.class);
         Assert.assertNotNull(link);
         Assert.assertTrue(link instanceof StringIndentProcessLink);
         //noinspection unchecked
@@ -46,7 +46,7 @@ public class FactoryTest {
     @Test
     public void testNonDefaultFactoryDefaultLink() {
         ProcessLinkFactory factory = extendedDefaultLinkFactory;
-        ProcessLink link = factory.newProcessLink(StringIndentProcessLink.class);
+        ProcessLink<String> link = factory.newProcessLink(StringIndentProcessLink.class);
         Assert.assertNotNull(link);
         Assert.assertTrue(link instanceof StringIndentProcessLink);
         //noinspection unchecked
@@ -56,7 +56,7 @@ public class FactoryTest {
     @Test
     public void testNonDefaultFactoryNonDefaultLink() {
         ProcessLinkFactory factory = extendedDefaultLinkFactory;
-        ProcessLink link = factory.newProcessLink(StringPadProcessLink.class);
+        ProcessLink<String> link = factory.newProcessLink(StringPadProcessLink.class);
         Assert.assertNotNull(link);
         Assert.assertTrue(link instanceof StringPadProcessLink);
         //noinspection unchecked
@@ -69,15 +69,15 @@ public class FactoryTest {
     @Test
     public void testNewLinkEachTime() {
         ProcessLinkFactory factory = new DefaultProcessLinkFactory();
-        ProcessLink link1 = factory.newProcessLink(StringIndentProcessLink.class);
-        ProcessLink link2 = factory.newProcessLink(StringIndentProcessLink.class);
+        ProcessLink<String> link1 = factory.newProcessLink(StringIndentProcessLink.class);
+        ProcessLink<String> link2 = factory.newProcessLink(StringIndentProcessLink.class);
         Assert.assertFalse(link1 == link2);
     }
 
     /**
      * {@link DefaultProcessLinkFactory} should throw {@link NoSuchMethodException} when requested {@link ProcessLink} does not have a default constructor.
      *
-     * @throws Throwable
+     * @throws Throwable if an exception occurs during {@link ProcessLink} instantiation
      */
     @Test(expected = NoSuchMethodException.class)
     public void testDefaultFactoryFailOnNonDefaultLink() throws Throwable {

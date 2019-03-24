@@ -20,22 +20,22 @@ public class ProcessLinkTest {
 
     @Test
     public void testProcessLinkApply() {
-        ProcessLink stringIndentProcessLink = new StringIndentProcessLink();
+        ProcessLink<String> stringIndentProcessLink = new StringIndentProcessLink();
         Assert.assertEquals(stringIndentProcessLink.apply(TEST_STRING), INDENT_EXPECTED);
     }
 
     @Test
     public void testRepeatedProcessLinkApply() {
-        ProcessLink stringIndentProcessLink = new StringIndentProcessLink();
-        String ss = (String)stringIndentProcessLink.apply(TEST_STRING);
+        ProcessLink<String> stringIndentProcessLink = new StringIndentProcessLink();
+        String ss = stringIndentProcessLink.apply(TEST_STRING);
         Assert.assertEquals(stringIndentProcessLink.apply(ss), INDENT_EXPECTED2);
     }
 
     @Test
     public void testDifferentProcessLinkApply() {
-        ProcessLink stringIndentProcessLink = new StringIndentProcessLink();
-        ProcessLink stringPadProcessLink = new StringPadProcessLink(PAD_STRING);
-        String indentedString = (String) stringIndentProcessLink.apply(TEST_STRING);
+        ProcessLink<String> stringIndentProcessLink = new StringIndentProcessLink();
+        ProcessLink<String> stringPadProcessLink = new StringPadProcessLink(PAD_STRING);
+        String indentedString = stringIndentProcessLink.apply(TEST_STRING);
         Assert.assertEquals(indentedString, INDENT_EXPECTED);
         Assert.assertEquals(stringPadProcessLink.apply(TEST_STRING), PAD_EXPECTED);
         Assert.assertEquals(stringPadProcessLink.apply(indentedString), INDENT_PAD_EXPECTED);

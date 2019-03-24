@@ -92,8 +92,8 @@ public class LinkedProcessChain<T> implements ProcessChain<T> {
     }
 
     private class MetaLink<V> {
-        ProcessLink<V> processLink;
-        Predicate<V> test;
+        final ProcessLink<V> processLink;
+        final Predicate<V> test;
 
         private MetaLink(ProcessLink<V> processLink) {
             this.processLink = processLink;

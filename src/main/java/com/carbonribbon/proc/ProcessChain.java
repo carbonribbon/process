@@ -43,7 +43,7 @@ public interface ProcessChain<T> {
 
     /**
      * Apply the {@link ProcessChain} to each object in a {@link Collection}, applying each {@link ProcessLink} in turn.
-     * The order in which links are applied to objects is unspecified.
+     * The order in which objects are processed is unspecified.
      *
      * @param t a collection of objects to process
      * @return a {@link Collection} containing the resulting objects

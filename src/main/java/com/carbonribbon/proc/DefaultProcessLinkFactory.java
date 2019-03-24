@@ -9,7 +9,7 @@ package com.carbonribbon.proc;
  */
 public class DefaultProcessLinkFactory implements ProcessLinkFactory {
     @Override
-    public ProcessLink newProcessLink(Class<? extends ProcessLink> clazz) {
+    public <T> ProcessLink<T> newProcessLink(Class<? extends ProcessLink<T>> clazz) {
         try {
             return clazz.getConstructor().newInstance();
         } catch (Exception e) {

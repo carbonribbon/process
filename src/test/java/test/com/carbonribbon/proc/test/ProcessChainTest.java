@@ -16,7 +16,7 @@ public class ProcessChainTest {
     private static final String INDENT_EXPECTED = " TEST";
     private static final String INDENT_EXPECTED2 = "  TEST";
     private static final String INDENT_PAD_EXPECTED = "+ TEST";
-    private static final String OTHER_EXPECTED = "+TEST";
+    //    private static final String OTHER_EXPECTED = "+TEST";
     private static final String PAD_STRING = "+";
 
     private ProcessLinkFactory extendedDefaultLinkFactory;
@@ -25,9 +25,9 @@ public class ProcessChainTest {
     public void setup() {
         extendedDefaultLinkFactory = new DefaultProcessLinkFactory() {
             @Override
-            public ProcessLink newProcessLink(Class<? extends ProcessLink> clazz) {
+            public <T> ProcessLink<T> newProcessLink(Class<? extends ProcessLink<T>> clazz) {
                 if (StringPadProcessLink.class.equals(clazz)) {
-                    return new StringPadProcessLink("+");
+                    return (ProcessLink<T>) new StringPadProcessLink("+");
                 }
                 return super.newProcessLink(clazz);
             }

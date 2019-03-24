@@ -13,7 +13,6 @@ public interface ProcessLink<T> {
 
     /**
      * Applies the {@link ProcessLink} operation to an object.
-     * The original object should not be modified.
      *
      * @param t the input object
      * @return the processing result

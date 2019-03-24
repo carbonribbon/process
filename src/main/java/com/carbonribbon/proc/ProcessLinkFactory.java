@@ -13,5 +13,5 @@ public interface ProcessLinkFactory {
      * @param clazz {@link ProcessLink} class
      * @return new instance of clazz
      */
-    ProcessLink newProcessLink(Class<? extends ProcessLink> clazz);
+    <T> ProcessLink<T> newProcessLink(Class<? extends ProcessLink<T>> clazz);
 }
